@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Research Paper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: #111;
+      font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    }
+    
+    .spinner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      width: 60px;
+      height: 60px;
+      border: 6px solid #333;
+      border-top: 6px solid #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    
+    .pdf-frame {
+      border: none;
+      width: 100vw;
+      height: 100vh;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      background: transparent;
+      position: absolute;
+      top: 0; left: 0;
+    }
+    .pdf-frame.loaded {
+      opacity: 1;
+    }
+    
+    .fallback {
+      color: #fff;
+      background: #111;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      z-index: 5;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="spinner" id="spinner" aria-label="Loading PDF"></div>
+  <iframe id="pdf" class="pdf-frame" src="SolarShieldPaper.pdf" type="application/pdf" title="Research Paper PDF" aria-label="Research Paper PDF" tabindex="0"></iframe>
+  <noscript>
+    <div class="fallback">Please enable JavaScript to view the PDF.</div>
+  </noscript>
+  <div class="fallback" id="fallback" style="display:none;">Your browser does not support PDF viewing. <br> <a href="SolarShieldPaper.pdf" style="color:#4fc3f7;">Download PDF</a></div>
+  <script>
+    const iframe = document.getElementById('pdf');
+    const spinner = document.getElementById('spinner');
+    const fallback = document.getElementById('fallback');
+    let loaded = false;
+    // Show spinner until PDF loads
+    iframe.onload = function() {
+      loaded = true;
+      spinner.style.display = 'none';
+      iframe.classList.add('loaded');
+    };
+    // Fallback if PDF fails to load
+    setTimeout(() => {
+      if (!loaded) {
+        spinner.style.display = 'none';
+        fallback.style.display = 'flex';
+      }
+    }, 5000);
+  </script>
+</body>
+</html>
